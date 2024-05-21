@@ -1,5 +1,6 @@
 import React, { useState, useRef } from 'react';
 // JSX é a misturar HTML com JS dentro do React. Para acrescentar o código JS dentro ali da função React,preciso colocar {}.
+import axios from 'axios'
 import People from './assets/people.svg';
 import Arrow from './assets/arrow.svg';
 import Trash from './assets/trash.svg';
@@ -11,18 +12,23 @@ const App = () => {
   const inputName = useRef()
   const inputAge = useRef()
 
-  function addNewUser() {
-    setUsers([
-      ...users, 
-      { 
-        id: Math.random(), 
-        name: inputName.current.value,
-        age: inputAge.current. value 
-      },
-    ]);
+  async function addNewUser() {
+
+    //const {data: newUser} = await axios.post("http://localhost:3002/users", { 
+    //  name: inputName.current.value,
+    //  age: inputAge.current. value,
+    //  });
+    // console.log(newUser)
+    // setUsers([ ...users, newUser]);
+
+    const { data: newUsers } = await axios.get("http://localhost:3002/users")
+
+    setUsers(newUsers)
+
   }
+
   function deleteUser(userId) {
-    const newUsers = users.filter (user => user.id !== userId)
+    const newUsers = users.filter(user => user.id !== userId)
     setUsers(newUsers);
   }
   return (
